@@ -62,10 +62,10 @@ static GLFWbool waitForEvent(double* timeout)
     FD_ZERO(&fds);
     FD_SET(fd, &fds);
 #if defined(__linux__)
-    FD_SET(_glfw.linux_js.inotify, &fds);
+    FD_SET(_glfw.linjs.inotify, &fds);
 
-    if (fd < _glfw.linux_js.inotify)
-        count = _glfw.linux_js.inotify + 1;
+    if (fd < _glfw.linjs.inotify)
+        count = _glfw.linjs.inotify + 1;
 #endif
     for (;;)
     {
@@ -2149,7 +2149,7 @@ void _glfwPlatformSetWindowFloating(_GLFWwindow* window, GLFWbool enabled)
 
 void _glfwPlatformPollEvents(void)
 {
-    _glfwPollJoystickEvents();
+    _glfwDetectJoystickConnectionLinux();
 
     int count = XPending(_glfw.x11.display);
     while (count--)

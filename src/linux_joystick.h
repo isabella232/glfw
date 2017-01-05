@@ -29,40 +29,32 @@
 
 #include <regex.h>
 
-#define _GLFW_PLATFORM_LIBRARY_JOYSTICK_STATE _GLFWjoylistLinux linux_js
+#define _GLFW_PLATFORM_JOYSTICK_STATE         _GLFWjoystickLinuxJS linjs
+#define _GLFW_PLATFORM_LIBRARY_JOYSTICK_STATE _GLFWlibraryLinuxJS  linjs
 
 
 // Linux-specific joystick data
 //
-typedef struct _GLFWjoystickLinux
+typedef struct _GLFWjoystickLinuxJS
 {
-    GLFWbool        present;
     int             fd;
-    float*          axes;
-    int             axisCount;
-    unsigned char*  buttons;
-    int             buttonCount;
-    char*           name;
     char*           path;
-} _GLFWjoystickLinux;
+} _GLFWjoystickLinuxJS;
 
 // Linux-specific joystick API data
 //
-typedef struct _GLFWjoylistLinux
+typedef struct _GLFWlibraryLinuxJS
 {
-    _GLFWjoystickLinux js[GLFW_JOYSTICK_LAST + 1];
-
 #if defined(__linux__)
     int             inotify;
     int             watch;
     regex_t         regex;
 #endif /*__linux__*/
-} _GLFWjoylistLinux;
+} _GLFWlibraryLinuxJS;
 
 
 GLFWbool _glfwInitJoysticksLinux(void);
 void _glfwTerminateJoysticksLinux(void);
-
-void _glfwPollJoystickEvents(void);
+void _glfwDetectJoystickConnectionLinux(void);
 
 #endif // _glfw3_linux_joystick_h_
