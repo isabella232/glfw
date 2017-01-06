@@ -28,7 +28,7 @@
 #define _glfw3_win32_joystick_h_
 
 #define _GLFW_PLATFORM_JOYSTICK_STATE         _GLFWjoystickWin32 win32
-#define _GLFW_PLATFORM_LIBRARY_JOYSTICK_STATE
+#define _GLFW_PLATFORM_LIBRARY_JOYSTICK_STATE int pootoo
 
 
 // Joystick element (axis, button or slider)

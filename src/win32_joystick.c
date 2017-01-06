@@ -31,9 +31,6 @@
 
 #include <initguid.h>
 
-#define _GLFW_PRESENCE_ONLY 1
-#define _GLFW_UPDATE_STATE  2
-
 #define _GLFW_TYPE_AXIS     0
 #define _GLFW_TYPE_SLIDER   1
 #define _GLFW_TYPE_BUTTON   2
@@ -458,9 +455,9 @@ static GLFWbool openXinputDevice(DWORD index)
 
     for (jid = GLFW_JOYSTICK_1;  jid <= GLFW_JOYSTICK_LAST;  jid++)
     {
-        if (_glfw.joysticks[jis].present &&
-            _glfw.joysticks[jis].win32.device == NULL &&
-            _glfw.joysticks[jis].win32.index == index)
+        if (_glfw.joysticks[jid].present &&
+            _glfw.joysticks[jid].win32.device == NULL &&
+            _glfw.joysticks[jid].win32.index == index)
         {
             return GLFW_FALSE;
         }
@@ -551,7 +548,7 @@ void _glfwDetectJoystickDisconnectionWin32(void)
     int jid;
 
     for (jid = GLFW_JOYSTICK_1;  jid <= GLFW_JOYSTICK_LAST;  jid++)
-        pollJoystickState(_glfw.joysticks + jid, _GLFW_PRESENCE_ONLY);
+        _glfwPlatformPollJoystick(jid, _GLFW_POLL_PRESENCE);
 }
 
 
@@ -618,13 +615,13 @@ int _glfwPlatformPollJoystick(int jid, int mode)
                 {
                     const int directions[9] = { 1, 3, 2, 6, 4, 12, 8, 9, 0 };
                     // Screams of horror are appropriate at this point
-                    int value = LOWORD(*(DWORD*) data) / (45 * DI_DEGREES);
-                    if (value < 0 || value > 8)
-                        value = 8;
+                    int state = LOWORD(*(DWORD*) data) / (45 * DI_DEGREES);
+                    if (state < 0 || state > 8)
+                        state = 8;
 
                     for (j = 0;  j < 4;  j++)
                     {
-                        const char value = (directions[value] & (1 << j)) != 0;
+                        const char value = (directions[state] & (1 << j)) != 0;
                         _glfwInputJoystickButton(jid, bi, value);
                         bi++;
                     }
