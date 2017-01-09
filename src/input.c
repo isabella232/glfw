@@ -168,6 +168,7 @@ _GLFWjoystick* _glfwAllocJoystick(const char* name, int axisCount, int buttonCou
         return NULL;
 
     js = _glfw.joysticks + jid;
+    js->present = GLFW_TRUE;
     js->name = strdup(name);
     js->axes = calloc(axisCount, sizeof(float));
     js->buttons = calloc(buttonCount, 1);
